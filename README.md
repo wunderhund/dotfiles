@@ -5,7 +5,7 @@ miscellaneous user environment files I use
 
 A ZShell theme I modified for my personal use. Primarily ripped off from the [af-magic.zsh-theme](https://github.com/andyfleming/oh-my-zsh) by andyfleming. ISO date formatting taken from the [bira-date](https://gist.github.com/asimihsan/5277137) by asimihsan.
 
-![zshell theme screnshot][images/zsh-theme.png]
+![zshell theme screnshot](images/zsh-theme.png)
 
 ### Installation
 

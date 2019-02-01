@@ -23,12 +23,18 @@ eval venv_bracket_color='$FG[165]'
 eval venv_color='$FG[165]'
 eval pyenv_color='$FG[221]'
 
+function pyprompt () {
+  if [[ $PYENV_SHELL -eq 'zsh' ]]; then
+    echo "[$(python -V 2>&1 | grep Python | cut -f 2 -d ' ')]"
+  fi
+}
+
 # Primary prompt
-PS1='%(?..%{$error_color%}[%?] %{$reset_color%})\
+PS1='%(?..%{$error_color%}[%?]%{$reset_color%})\
 $(virtualenv_prompt_info)%{$reset_color%}\
-%{$pyenv_color%}$(pyenv_prompt_info)%{$reset_color%}\
+%{$pyenv_color%}$(pyprompt)%{$reset_color%}\
 %{$path_color%}%~%{$reset_color%}\
-$(git_prompt_info) %{$reset_color%}\
+$(git_prompt_info)%{$reset_color%}\
 %{$prompt_color%}%(!.#.»)%{$reset_color%} '
 
 # Secondary prompt (ongoing commands)
@@ -48,5 +54,5 @@ ZSH_THEME_GIT_PROMPT_SUFFIX="%{$git_parens_color%})%{$reset_color%}"
 
 # virtualenv prompt settings
 ZSH_THEME_VIRTUALENV_PREFIX="%{$venv_bracket_color%}[%{$venv_color%}"
-ZSH_THEME_VIRTUALENV_SUFFIX="%{$venv_bracket_color%}] %{$reset_color%}"
+ZSH_THEME_VIRTUALENV_SUFFIX="%{$venv_bracket_color%}]%{$reset_color%}"
 

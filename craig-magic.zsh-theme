@@ -23,12 +23,6 @@ eval venv_bracket_color='$FG[165]'
 eval venv_color='$FG[165]'
 eval pyenv_color='$FG[221]'
 
-function pyprompt () {
-  if [[ $PYENV_SHELL -eq 'zsh' ]]; then
-    echo "[$(python -V 2>&1 | grep Python | cut -f 2 -d ' ')]"
-  fi
-}
-
 # Primary prompt
 PS1='%(?..%{$error_color%}[%?]%{$reset_color%})\
 $(virtualenv_prompt_info)%{$reset_color%}\
@@ -56,3 +50,11 @@ ZSH_THEME_GIT_PROMPT_SUFFIX="%{$git_parens_color%})%{$reset_color%}"
 ZSH_THEME_VIRTUALENV_PREFIX="%{$venv_bracket_color%}[%{$venv_color%}"
 ZSH_THEME_VIRTUALENV_SUFFIX="%{$venv_bracket_color%}]%{$reset_color%}"
 
+# PYENV Function
+# This checks if the user has pyenv installed and if so, 
+# adds the active python version to the beginning of the prompt.
+function pyprompt () {
+  if [[ $PYENV_SHELL -eq 'zsh' ]]; then
+    echo "[$(python -V 2>&1 | grep Python | cut -f 2 -d ' ')]"
+  fi
+}

@@ -19,14 +19,14 @@ eval prompt_color='$FG[105]'
 eval git_dirty_color='$FG[214]'
 eval git_parens_color='$FG[031]'
 eval git_branch_color='$FG[040]'
-eval venv_bracket_color='$FG[201]'
-eval venv_color='$FG[201]'
+eval venv_bracket_color='$FG[165]'
+eval venv_color='$FG[165]'
 eval pyenv_color='$FG[221]'
 
 # Primary prompt
 PS1='%(?..%{$error_color%}[%?] %{$reset_color%})\
 $(virtualenv_prompt_info)%{$reset_color%}\
-%{$pyenv_color%}${PYENV_PROMPT}%{$reset_color%}\
+%{$pyenv_color%}$(pyenv_prompt_info)%{$reset_color%}\
 %{$path_color%}%~%{$reset_color%}\
 $(git_prompt_info) %{$reset_color%}\
 %{$prompt_color%}%(!.#.»)%{$reset_color%} '
@@ -50,6 +50,3 @@ ZSH_THEME_GIT_PROMPT_SUFFIX="%{$git_parens_color%})%{$reset_color%}"
 ZSH_THEME_VIRTUALENV_PREFIX="%{$venv_bracket_color%}[%{$venv_color%}"
 ZSH_THEME_VIRTUALENV_SUFFIX="%{$venv_bracket_color%}] %{$reset_color%}"
 
-ZSH_THEME_PYENV_PREFIX=""
-ZSH_THEME_PYENV_SUFFIX=" "
-PYENV_PROMPT="${ZSH_THEME_PYENV_PREFIX}$(pyenv_prompt_info)${ZSH_THEME_PYENV_SUFFIX}"

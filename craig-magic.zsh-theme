@@ -54,7 +54,14 @@ ZSH_THEME_VIRTUALENV_SUFFIX="%{$venv_bracket_color%}]%{$reset_color%}"
 # This checks if the user has pyenv installed and if so, 
 # adds the active python version to the beginning of the prompt.
 function pyprompt () {
-  if [[ $PYENV_SHELL -eq 'zsh' ]]; then
+  ZSH_THEME_PYENV_LOCAL=$(pyenv local) 2>/dev/null
+  ZSH_THEME_PYENV_GLOBAL=$(pyenv global) 2>/dev/null
+  if [[ ! -z "$ZSH_THEME_PYENV_LOCAL" ]]; then
+    ZSH_THEME_PYENV_ACTIVE=$ZSH_THEME_PYENV_LOCAL
+  elif [[ -z "$ZSH_THEME_PYENV_LOCAL" ]]; then
+    ZSH_THEME_PYENV_ACTIVE=$ZSH_THEME_PYENV_GLOBAL
+  fi
+  if [[ $PYENV_SHELL -eq 'zsh' ]] && [[ $ZSH_THEME_PYENV_ACTIVE != 'system' ]]; then
     echo "[$(python -V 2>&1 | grep Python | cut -f 2 -d ' ')]"
   fi
 }

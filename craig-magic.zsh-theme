@@ -21,12 +21,14 @@ eval git_parens_color='$FG[031]'
 eval git_branch_color='$FG[040]'
 eval venv_bracket_color='$FG[165]'
 eval venv_color='$FG[165]'
+eval pyenv_color='$FG[221]'
 
 # Primary prompt
-PS1='%(?..%{$error_color%}[%?] %{$reset_color%})\
+PS1='%(?..%{$error_color%}[%?]%{$reset_color%})\
 $(virtualenv_prompt_info)%{$reset_color%}\
+%{$pyenv_color%}$(pyprompt)%{$reset_color%}\
 %{$path_color%}%~%{$reset_color%}\
-$(git_prompt_info) %{$reset_color%}\
+$(git_prompt_info)%{$reset_color%}\
 %{$prompt_color%}%(!.#.»)%{$reset_color%} '
 
 # Secondary prompt (ongoing commands)
@@ -45,5 +47,21 @@ ZSH_THEME_GIT_PROMPT_DIRTY="%{$git_dirty_color%}*%{$reset_color%}"
 ZSH_THEME_GIT_PROMPT_SUFFIX="%{$git_parens_color%})%{$reset_color%}"
 
 # virtualenv prompt settings
-ZSH_THEME_VIRTUALENV_PREFIX="%{$venv_bracket_color%}<%{$venv_color%}"
-ZSH_THEME_VIRTUALENV_SUFFIX="%{$venv_bracket_color%}> %{$reset_color%}"
+ZSH_THEME_VIRTUALENV_PREFIX="%{$venv_bracket_color%}[%{$venv_color%}"
+ZSH_THEME_VIRTUALENV_SUFFIX="%{$venv_bracket_color%}]%{$reset_color%}"
+
+# PYENV Function
+# This checks if the user has pyenv installed and if so, 
+# adds the active python version to the beginning of the prompt.
+function pyprompt () {
+  ZSH_THEME_PYENV_LOCAL=$(pyenv local) 2>/dev/null
+  ZSH_THEME_PYENV_GLOBAL=$(pyenv global) 2>/dev/null
+  if [[ ! -z "$ZSH_THEME_PYENV_LOCAL" ]]; then
+    ZSH_THEME_PYENV_ACTIVE=$ZSH_THEME_PYENV_LOCAL
+  elif [[ -z "$ZSH_THEME_PYENV_LOCAL" ]]; then
+    ZSH_THEME_PYENV_ACTIVE=$ZSH_THEME_PYENV_GLOBAL
+  fi
+  if [[ $PYENV_SHELL -eq 'zsh' ]] && [[ $ZSH_THEME_PYENV_ACTIVE != 'system' ]]; then
+    echo "[$(python -V 2>&1 | grep Python | cut -f 2 -d ' ')]"
+  fi
+}

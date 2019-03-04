@@ -37,7 +37,6 @@ PS1='%(?..%{$error_color%}[%?]%{$reset_color%})\
 $(virtualenv_prompt_info)%{$reset_color%}\
 %{$pyenv_color%}$(pyprompt)%{$reset_color%}\
 $(vagrant_status_info)\
-$tf_prompt_color$(tf_prompt_info)%{$reset_color%}\
 %{$path_color%}%~%{$reset_color%}\
 $(git_prompt_info)%{$reset_color%}\
 %{$prompt_color%}%(!.#.»)%{$reset_color%} '
@@ -60,6 +59,13 @@ ZSH_THEME_GIT_PROMPT_SUFFIX="%{$git_parens_color%})%{$reset_color%}"
 # virtualenv prompt settings
 ZSH_THEME_VIRTUALENV_PREFIX="%{$venv_bracket_color%}[%{$venv_color%}"
 ZSH_THEME_VIRTUALENV_SUFFIX="%{$venv_bracket_color%}]%{$reset_color%}"
+
+# Use gnu grep if it's installed in OSX
+if [[ `uname` == 'Darwin' ]]; then
+  if [[ -f '/usr/local/bin/ggrep' ]]; then
+    grep='/usr/local/bin/ggrep'
+  fi
+fi
 
 # PYENV Function
 # This checks if the user has pyenv installed and if so, 
@@ -84,11 +90,11 @@ ZSH_THEME_VAGRANT_SUFFIX="%{$vagrant_bracket_color%}]%{$reset_color%}"
 # Vagrant Function
 function vagrant_status_info() {
   if [[ -d .vagrant && -f Vagrantfile ]]; then
-    statuses=$(vagrant status 2> /dev/null | ggrep -P "\w+\s+[\w\s]+\s\(\w+\)")
+    statuses=$(vagrant status 2> /dev/null | grep -P "\w+\s+[\w\s]+\s\(\w+\)")
     statuses=("${(f)statuses}")
     for vm_details in $statuses; do
-      vm_name=$(echo $vm_details | ggrep -o -P "^\w+")
-      vm_state=$(echo $vm_details | ggrep -o -E "running|saved|not created|poweroff")
+      vm_name=$(echo $vm_details | grep -o -P "^\w+")
+      vm_state=$(echo $vm_details | grep -o -E "running|saved|not created|poweroff")
       printf '%s' $ZSH_THEME_VAGRANT_PREFIX
       if [[ "$vm_state" == "running" ]]; then
         printf '%s' "%{$vagrant_running_color%}$vm_name"

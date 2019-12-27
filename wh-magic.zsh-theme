@@ -36,7 +36,7 @@ eval vagrant_stopped_color='$FG[001]'
 PS1='%(?..%{$error_color%}[%?]%{$reset_color%})\
 $(virtualenv_prompt_info)%{$reset_color%}\
 %{$pyenv_color%}$(pyprompt)%{$reset_color%}\
-$(vagrant_status_info)\
+$(vagrant_status_info) \
 %{$path_color%}%~%{$reset_color%}\
 $(git_prompt_info)%{$reset_color%}\
 %{$prompt_color%}%(!.#.»)%{$reset_color%} '
@@ -71,15 +71,20 @@ fi
 # This checks if the user has pyenv installed and if so, 
 # adds the active python version to the beginning of the prompt.
 function pyprompt () {
+  ZSH_THEME_PYENV_SHELL=$PYENV_VERSION 2>/dev/null
   ZSH_THEME_PYENV_LOCAL=$(pyenv local) 2>/dev/null
   ZSH_THEME_PYENV_GLOBAL=$(pyenv global) 2>/dev/null
-  if [[ ! -z "$ZSH_THEME_PYENV_LOCAL" ]]; then
+  if [[ ! -z "$ZSH_THEME_PYENV_SHELL" ]] then
+    ZSH_THEME_PYENV_ACTIVE=$PYENV_VERSION
+  elif [[ ! -z "$ZSH_THEME_PYENV_LOCAL" ]]; then
     ZSH_THEME_PYENV_ACTIVE=$ZSH_THEME_PYENV_LOCAL
   elif [[ -z "$ZSH_THEME_PYENV_LOCAL" ]]; then
     ZSH_THEME_PYENV_ACTIVE=$ZSH_THEME_PYENV_GLOBAL
   fi
   if [[ $PYENV_SHELL -eq 'zsh' ]] && [[ $ZSH_THEME_PYENV_ACTIVE != 'system' ]]; then
     echo "[$(python -V 2>&1 | grep Python | cut -f 2 -d ' ')]"
+  elif [[ $PYENV_SHELL -eq 'zsh' ]] && [[ $ZSH_THEME_PYENV_ACTIVE == 'system' ]]; then
+    echo "[system]"
   fi
 }
 

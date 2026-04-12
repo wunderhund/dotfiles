@@ -33,13 +33,7 @@ eval vagrant_notcreated_color='$FG[245]'
 eval vagrant_stopped_color='$FG[001]'
 
 # Primary prompt
-PS1='%(?..%{$error_color%}[%?]%{$reset_color%})\
-$(virtualenv_prompt_info)%{$reset_color%}\
-%{$pyenv_color%}$(pyprompt)%{$reset_color%}\
-$(vagrant_status_info) \
-%{$path_color%}%~%{$reset_color%}\
-$(git_prompt_info)%{$reset_color%}\
-%{$prompt_color%}%(!.#.»)%{$reset_color%} '
+PS1='%(?..%{$error_color%}[%?]%{$reset_color%})$(virtualenv_prompt_info)%{$reset_color%}%{$pyenv_color%}$(pyprompt)%{$reset_color%}$(vagrant_status_info) %{$path_color%}%~%{$reset_color%}$(git_prompt_info)%{$reset_color%}%{$prompt_color%}%(!.#.»)%{$reset_color%} '
 
 # Secondary prompt (ongoing commands)
 PS2='%{$prompt_color%}\ %{$reset_color%}'
